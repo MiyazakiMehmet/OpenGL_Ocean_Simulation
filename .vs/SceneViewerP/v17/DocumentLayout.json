@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\src\\Cpp\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|solutionrelative:SceneViewerP\\src\\Cpp\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\src\\Cpp\\main.cpp",
+              "RelativeDocumentMoniker": "SceneViewerP\\src\\Cpp\\main.cpp",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\src\\Cpp\\main.cpp",
+              "RelativeToolTip": "SceneViewerP\\src\\Cpp\\main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-13T00:18:55.609Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

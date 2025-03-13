@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|solutionrelative:SceneViewerP\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{32C80FF4-3035-4104-B4BF-030E9875A2EA}|SceneViewerP\\SceneViewerP.vcxproj|solutionrelative:SceneViewerP\\src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,10 +20,10 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\main.cpp",
-              "RelativeDocumentMoniker": "SceneViewerP\\main.cpp",
-              "ToolTip": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\main.cpp*",
-              "RelativeToolTip": "SceneViewerP\\main.cpp*",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\src\\main.cpp",
+              "RelativeDocumentMoniker": "SceneViewerP\\src\\main.cpp",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\SceneViewerP\\src\\main.cpp",
+              "RelativeToolTip": "SceneViewerP\\src\\main.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-13T00:10:16.575Z",
