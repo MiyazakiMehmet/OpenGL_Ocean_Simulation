@@ -1,0 +1,6 @@
+﻿  main.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 11 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  SceneViewerP.vcxproj -> C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\x64\Release\SceneViewerP.exe
