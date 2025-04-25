@@ -44,6 +44,12 @@ int main()
         "FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n"
         "}";
 
+    const char* fragmentShaderSource2 = "#version 330 core\n"
+        "out vec4 FragColor;\n"
+        "void main(){\n"
+        "FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"
+        "}";
+
     //Creating vertex shader
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -77,6 +83,11 @@ int main()
             infoLog << std::endl;
     }
 
+    unsigned int fragmentShader2;
+    fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, NULL);
+    glCompileShader(fragmentShader2);
+
 
     //Creating a shader program
     unsigned int shaderProgram;
@@ -94,15 +105,33 @@ int main()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    unsigned int shaderProgram2;
+    shaderProgram2 = glCreateProgram();
+
+    glAttachShader(shaderProgram2, vertexShader);
+    glAttachShader(shaderProgram2, fragmentShader2);
+    glLinkProgram(shaderProgram2);
+
+
+    glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram2, 512, NULL, infoLog);
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader2);
+
+
     float vertices[] = {
-        0.5f, 0.5f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f, 0.5f, 0.0f // top left
+        -0.5f, 0.5f, 0.0f, 
+        -1.0f, -0.5f, 0.0f, 
+        0.0f, -0.5f, 0.0f,
+        0.5f, 0.5f, 0.0f,
+        1.0f, -0.5f, 0.0f
     };
     unsigned int indices[] = { // note that we start from 0!
-        0, 1, 3, // first triangle
-        1, 2, 3 // second triangle
+        0, 1, 2, // first triangle
+        2, 3, 4 // second triangle
     };
 
 
@@ -124,6 +153,20 @@ int main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    unsigned int VAO2, VBO2; //can store position, color, texture...)
+    glGenVertexArrays(1, &VAO2);
+    glGenBuffers(1, &VBO2); //It allocates its ID in GPU
+
+    glBindVertexArray(VAO2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2); //Bind c++ vbo and gpu vbo (which we created in vram)
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //Specify indexes for vertex shader to divide
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //saying shader that first 3 elements will be position datas
+    glEnableVertexAttribArray(0); //Enables vertexAttrib at index 0 (normally disabled)
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
 
     while (!glfwWindowShouldClose(window))
     {
@@ -134,7 +177,14 @@ int main()
 
         glBindVertexArray(VAO); //Bind c++ vbo and gpu vbo (which we created in vram)
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); //Draw function for ebo's
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0); //Draw function for ebo's
+
+        glUseProgram(shaderProgram2);
+
+        glBindVertexArray(VAO2); //Bind c++ vbo and gpu vbo (which we created in vram)
+
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(unsigned int))); //Draw function for ebo's
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
