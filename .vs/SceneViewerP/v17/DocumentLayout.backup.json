@@ -42,8 +42,7 @@
               "RelativeToolTip": "SceneViewerP\\src\\Shader\\FragmentShader.frag",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-26T07:21:15.077Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T07:21:15.077Z"
             },
             {
               "$type": "Document",
@@ -55,8 +54,7 @@
               "RelativeToolTip": "SceneViewerP\\src\\Shader\\VertexShader.vert",
               "ViewState": "AgIAAAgAAAAAAAAAAAAuwB8AAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-26T07:21:05.613Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T07:21:05.613Z"
             },
             {
               "$type": "Document",
@@ -68,8 +66,7 @@
               "RelativeToolTip": "SceneViewerP\\src\\Cpp\\Shader.h",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-25T21:02:35.162Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-25T21:02:35.162Z"
             },
             {
               "$type": "Document",
@@ -81,8 +78,7 @@
               "RelativeToolTip": "SceneViewerP\\src\\Cpp\\Shader.cpp",
               "ViewState": "AgIAAGAAAAAAAAAAAAAEwHkAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-25T21:02:18.903Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-25T21:02:18.903Z"
             },
             {
               "$type": "Document",
@@ -92,7 +88,7 @@
               "RelativeDocumentMoniker": "SceneViewerP\\src\\Cpp\\main.cpp",
               "ToolTip": "C:\\Users\\PC\\Desktop\\OpenGL_SceneViewer\\OpenGL_SceneViewer\\SceneViewerP\\src\\Cpp\\main.cpp",
               "RelativeToolTip": "SceneViewerP\\src\\Cpp\\main.cpp",
-              "ViewState": "AgIAANcAAAAAAAAAAAAQwOEAAABfAAAAAAAAAA==",
+              "ViewState": "AgIAANcAAAAAAAAAAAAQwOgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-13T00:18:55.609Z",
               "EditorCaption": ""
