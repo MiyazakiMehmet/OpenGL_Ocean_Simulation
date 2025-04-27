@@ -1,6 +1,12 @@
-﻿  Generating code
-  0 of 11 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+﻿  main.cpp
+C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\SceneViewerP\src\Cpp\main.cpp(42,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\SceneViewerP\src\Cpp\main.cpp(43,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\SceneViewerP\src\Cpp\main.cpp(74,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\SceneViewerP\src\Cpp\main.cpp(276,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\SceneViewerP\src\Cpp\main.cpp(287,50): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Generating code
+  1 of 496 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SceneViewerP.vcxproj -> C:\Users\PC\Desktop\OpenGL_SceneViewer\OpenGL_SceneViewer\x64\Release\SceneViewerP.exe

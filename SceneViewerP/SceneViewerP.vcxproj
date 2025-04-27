@@ -140,6 +140,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Cpp\main.cpp" />
+    <ClCompile Include="src\Cpp\Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Cpp\Shader.h" />
+    <ClInclude Include="src\Cpp\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shader\FragmentShader.frag" />
+    <None Include="src\Shader\VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
