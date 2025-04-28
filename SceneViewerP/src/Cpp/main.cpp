@@ -1,5 +1,4 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 #include <iostream>
 #include <vector>
@@ -10,8 +9,8 @@
 #include "gtc/matrix_transform.hpp"
 #include <gtc/type_ptr.hpp>
 
-
 #include "Shader.h"
+#include "Texture.h"
 
 //Camera attributes
 glm::vec3 cameraPos;
@@ -212,29 +211,8 @@ int main()
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
 
     //Textures
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    // set the texture wrapping/filtering options (on currently bound texture)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load("src/Textures/ocean.png", &width, &height, &nrChannels, 0);
-    //std::cout << "Texture loaded with channels: " << nrChannels << std::endl;
-
-    if (data) {
-        GLenum format = GL_RGB; //by default
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    Texture waterTexture = Texture("src/Textures/ocean.png");
+    waterTexture.CompileTexture();
 
     //Lightning
     glm::vec3 directionalLight = glm::vec3(-0.2f, -0.3f, -0.3f);
@@ -278,9 +256,9 @@ int main()
         //For light
         glUniform3fv(lightDirectionUniformLoc, 1, glm::value_ptr(directionalLight));
 
+        waterTexture.UseTexture();
 
-        //Binding texture and vao
-        glBindTexture(GL_TEXTURE_2D, texture);
+        //Binding vao
         glBindVertexArray(VAO); //Bind c++ vbo and gpu vbo (which we created in vram)
 
         //Drawing(connecting vertices(dots))

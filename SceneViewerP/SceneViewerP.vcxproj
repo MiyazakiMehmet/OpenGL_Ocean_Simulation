@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="src\Cpp\main.cpp" />
     <ClCompile Include="src\Cpp\Shader.cpp" />
+    <ClCompile Include="src\Cpp\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Cpp\Shader.h" />
     <ClInclude Include="src\Cpp\stb_image.h" />
+    <ClInclude Include="src\Cpp\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shader\FragmentShader.frag" />
