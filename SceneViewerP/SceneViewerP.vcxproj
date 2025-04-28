@@ -147,9 +147,11 @@
     <ClInclude Include="src\Cpp\Shader.h" />
     <ClInclude Include="src\Cpp\stb_image.h" />
     <ClInclude Include="src\Cpp\Texture.h" />
+    <ClInclude Include="src\Shader\SkyboxFragShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shader\FragmentShader.frag" />
+    <None Include="src\Shader\SkyboxVertShader.vert" />
     <None Include="src\Shader\VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
