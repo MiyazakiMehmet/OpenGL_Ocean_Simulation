@@ -21,6 +21,9 @@
     <ClCompile Include="src\Cpp\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Cpp\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Cpp\Shader.h">
@@ -29,9 +32,14 @@
     <ClInclude Include="src\Cpp\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cpp\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader\SkyboxFragShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shader\VertexShader.vert" />
     <None Include="src\Shader\FragmentShader.frag" />
+    <None Include="src\Shader\SkyboxVertShader.vert" />
   </ItemGroup>
 </Project>

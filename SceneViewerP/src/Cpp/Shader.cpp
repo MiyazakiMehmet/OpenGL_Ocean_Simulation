@@ -82,6 +82,7 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	glCompileShader(fragmentShader);
 
 	//Error Handling
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
@@ -94,6 +95,10 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	glAttachShader(shaderID, vertexShader);
 	glAttachShader(shaderID, fragmentShader);
 	glLinkProgram(shaderID);
+
+	//Does not need seperate shader since its already linked
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
 	//Error Handling
 	glGetProgramiv(shaderID, GL_LINK_STATUS, &success);

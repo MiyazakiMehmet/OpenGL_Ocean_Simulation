@@ -1,4 +1,4 @@
-#define STB_IMAGE_IMPLEMENTATION
+﻿#define STB_IMAGE_IMPLEMENTATION
 
 #include <iostream>
 #include <vector>
@@ -116,7 +116,10 @@ int main()
         return -1;
     }
 
+    glEnable(GL_DEPTH_TEST);
+
     Shader shader;
+    Shader skyboxShader;
 
     //Creating vertices(dots that have vertex attributes)
     std::vector<float> vertices;
@@ -189,6 +192,58 @@ int main()
 
     glBindVertexArray(0); // Unbind
 
+    //Skybox VAO, VBO, EBO creation
+    float skyboxVertices[] = {
+        //Front
+        -1.0f, -1.0f, 1.0f,
+        -1.0f,  1.0f, 1.0f,
+         1.0f,  1.0f, 1.0f,
+         1.0f, -1.0f, 1.0f,
+         //Back
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f
+    };
+
+    unsigned int skyboxIndices[] = {
+        // Front face
+        0, 1, 2,
+        0, 2, 3,
+        // Back face
+        7, 6, 5,
+        7, 5, 4,
+        // Left face
+        4, 5, 1,
+        4, 1, 0,
+        // Right face
+        3, 2, 6,
+        3, 6, 7,
+        // Top face
+        1, 5, 6,
+        1, 6, 2,
+        // Bottom face
+        4, 0, 3,
+        4, 3, 7
+    };
+    unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
+
+    glGenVertexArrays(1, &skyboxVAO);
+    glGenBuffers(1, &skyboxVBO);
+    glGenBuffers(1, &skyboxEBO);
+
+    glBindVertexArray(skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEBO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(skyboxIndices), skyboxIndices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(0); // Unbind
+
     //Transformations
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.5f, -1.0f, 0.0f));
@@ -204,25 +259,38 @@ int main()
     cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront)); //We want to retrieve cameraUp so we take cross product of x and z it gives perpendicular y direction relative to camera
 
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    glm::mat4 skyboxView = glm::mat4(glm::mat3(view)); // REMOVE TRANSLATION
 
     cameraSpeed = 2.5f;
 
     //Projection matrix
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)1400 / (float)1000, 0.1f, 100.0f);
 
     //Textures
     Texture waterTexture = Texture("src/Textures/ocean.png");
     waterTexture.CompileTexture();
+    std::vector<std::string> skyboxFacesPath = {
+        "src/Textures/skybox/px.png",
+        "src/Textures/skybox/nx.png",
+        "src/Textures/skybox/py.png",
+        "src/Textures/skybox/ny.png",
+        "src/Textures/skybox/pz.png",
+        "src/Textures/skybox/nz.png"
+    };
+    Texture skyboxTexture = Texture(skyboxFacesPath);
+    skyboxTexture.CompileCubeMap();
 
     //Lightning
     glm::vec3 directionalLight = glm::vec3(-0.2f, -0.3f, -0.3f);
 
     //Shader 
-
     std::string vertexShaderPath = "src/Shader/VertexShader.vert";
     std::string fragmentShaderPath = "src/Shader/FragmentShader.frag";
-
     shader.CompileShader(vertexShaderPath, fragmentShaderPath);
+
+    std::string skyboxVertexShaderPath = "src/Shader/SkyboxVertShader.vert";
+    std::string skyboxFragmentShaderPath = "src/Shader/SkyboxFragShader.frag";
+    skyboxShader.CompileShader(skyboxVertexShaderPath, skyboxFragmentShaderPath);
 
     //Getting uniforms Locations
     unsigned int modelUniformLoc = shader.UniformLocation("model");
@@ -231,20 +299,25 @@ int main()
     unsigned int timeUniformLoc = shader.UniformLocation("time");
     unsigned int lightDirectionUniformLoc = shader.UniformLocation("lightDir");
 
+    unsigned int viewUniformSkyboxLoc = skyboxShader.UniformLocation("view");
+    unsigned int projectionUniformSkyboxLoc = skyboxShader.UniformLocation("projection");
+
 
 
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);   
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         //Handling keys for camera
         ProcessInput(window);
 
+        //Draw normal scene
+        shader.UseShader();
+
         //Update view matrix if camera movement changes
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
-        shader.UseShader();
+        skyboxView = glm::mat4(glm::mat3(view)); // REMOVE TRANSLATION
 
         //Adding data to uniforms after creating shaders
         glUniformMatrix4fv(modelUniformLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -257,12 +330,26 @@ int main()
         glUniform3fv(lightDirectionUniformLoc, 1, glm::value_ptr(directionalLight));
 
         waterTexture.UseTexture();
+        glBindVertexArray(VAO);  // bind world VAO
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); // Draw grid
+        glBindVertexArray(0);
 
-        //Binding vao
-        glBindVertexArray(VAO); //Bind c++ vbo and gpu vbo (which we created in vram)
+        //Draw Skybox
+        glDepthFunc(GL_LEQUAL); // Important: allow skybox at max depth
+        glDepthMask(GL_FALSE); // Important: disable writing depth
 
-        //Drawing(connecting vertices(dots))
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); //Draw function for ebo's
+        skyboxShader.UseShader(); // switch to skybox shader
+
+        glUniformMatrix4fv(viewUniformSkyboxLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
+        glUniformMatrix4fv(projectionUniformSkyboxLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+        glBindVertexArray(skyboxVAO);
+        skyboxTexture.UseTexture();
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0); // Draw grid
+        glBindVertexArray(0); //unbind skybox VAO
+        glDepthMask(GL_TRUE);
+        glDepthFunc(GL_LESS); // 2️⃣ restore normal depth test
+
 
 
         glfwSwapBuffers(window);
