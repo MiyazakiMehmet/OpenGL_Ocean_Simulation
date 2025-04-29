@@ -12,6 +12,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "DirectionalLight.h"
+#include "Material.h"
 
 //Camera attributes
 glm::vec3 cameraPos;
@@ -122,6 +123,7 @@ int main()
     Shader shader;
     Shader skyboxShader;
     DirectionalLight directionalLight;
+    Material material;
 
     //Creating vertices(dots that have vertex attributes)
     std::vector<float> vertices;
@@ -277,9 +279,14 @@ int main()
     float ambientIntensity = 0.1f;
     float diffuseIntensity = 0.5f;
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDirection = glm::vec3(-0.2f, -0.3f, -0.2f);
+    glm::vec3 lightDirection = glm::vec3(-0.2f, -0.8f, -0.2f);
 
     directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
+
+    //Material
+    float specularIntensity = 0.4f;
+    float shininess = 32.0f;
+    material = Material(specularIntensity, shininess);
 
     //Shader 
     std::string vertexShaderPath = "src/Shader/VertexShader.vert";
@@ -314,6 +321,9 @@ int main()
         glUniform1f(shader.GetTimeUniformLoc(), timeValue);
         //For light
         shader.SetDirectionalLight(directionalLight);
+        //For material
+        glUniform3f(shader.GetEyePosUniformLoc(), cameraPos.x, cameraPos.y, cameraPos.z);
+        shader.SetMaterial(material);
 
         glBindVertexArray(VAO);  // bind world VAO
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); // Draw grid

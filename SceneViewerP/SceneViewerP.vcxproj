@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Cpp\Material.cpp" />
     <ClCompile Include="src\Cpp\DirectionalLight.cpp" />
     <ClCompile Include="src\Cpp\Light.cpp" />
     <ClCompile Include="src\Cpp\main.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="src\Cpp\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Cpp\Material.h" />
     <ClInclude Include="src\Cpp\DirectionalLight.h" />
     <ClInclude Include="src\Cpp\Light.h" />
     <ClInclude Include="src\Cpp\Shader.h" />
