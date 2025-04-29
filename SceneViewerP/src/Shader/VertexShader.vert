@@ -1,9 +1,7 @@
 #version 330 core
 
 layout (location = 0) in vec3 aPos;  //we say that from vertex attributes in index 0 (which is position), i assign it to aPos
-layout (location = 1) in vec2 aTexCoord;
 
-out vec2 texCoord;
 out float waveHeight;
 out vec3 fragNormal;
 
@@ -55,7 +53,6 @@ dWave_dz += -sin((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * (0.2 * 10.0)
 fragNormal = normalize(vec3(-dWave_dx, 1.0, -dWave_dz));
 
 waveHeight = pos.y;
-texCoord = aTexCoord;
 
 gl_Position = projection * view * model * vec4(pos, 1.0);
 };

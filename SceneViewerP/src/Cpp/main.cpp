@@ -11,6 +11,7 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "DirectionalLight.h"
 
 //Camera attributes
 glm::vec3 cameraPos;
@@ -120,6 +121,7 @@ int main()
 
     Shader shader;
     Shader skyboxShader;
+    DirectionalLight directionalLight;
 
     //Creating vertices(dots that have vertex attributes)
     std::vector<float> vertices;
@@ -132,15 +134,11 @@ int main()
             float xPos = ((float)x / gridSize) * size - size / 2.0f;
             float yPos = 0.0f;
             float zPos = ((float)y / gridSize) * size - size / 2.0f;
-            //Vertex texture position attributes
-            float uPos = ((float)x / gridSize);
-            float vPos = ((float)y / gridSize);
+
 
             vertices.push_back(xPos);
             vertices.push_back(yPos);
             vertices.push_back(zPos);
-            vertices.push_back(uPos);
-            vertices.push_back(vPos);
             //Vector will be (0,0,0,0,0),(1,0,0,1,0),(2,0,0,2,0)...
 
         }
@@ -155,11 +153,8 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     //Specify indexes for vertex shader to divide
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); //saying shader that first 3 elements will be position datas
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); //saying shader that first 3 elements will be position datas
     glEnableVertexAttribArray(0); //Enables vertexAttrib at index 0 (normally disabled)
-
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1); //Enables vertexAttrib at index 0 (normally disabled)
 
     //Creating indices
     std::vector<unsigned int> indices;
@@ -259,7 +254,7 @@ int main()
     cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront)); //We want to retrieve cameraUp so we take cross product of x and z it gives perpendicular y direction relative to camera
 
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    glm::mat4 skyboxView = glm::mat4(glm::mat3(view)); // REMOVE TRANSLATION
+    glm::mat4 skyboxView = glm::mat4(glm::mat3(view)); // we're removing translation from view matrix since we dont want skybox to move, just rotate
 
     cameraSpeed = 2.5f;
 
@@ -267,8 +262,6 @@ int main()
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)1400 / (float)1000, 0.1f, 100.0f);
 
     //Textures
-    Texture waterTexture = Texture("src/Textures/ocean.png");
-    waterTexture.CompileTexture();
     std::vector<std::string> skyboxFacesPath = {
         "src/Textures/skybox/px.png",
         "src/Textures/skybox/nx.png",
@@ -281,7 +274,12 @@ int main()
     skyboxTexture.CompileCubeMap();
 
     //Lightning
-    glm::vec3 directionalLight = glm::vec3(-0.2f, -0.3f, -0.3f);
+    float ambientIntensity = 0.1f;
+    float diffuseIntensity = 0.5f;
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 lightDirection = glm::vec3(-0.2f, -0.3f, -0.2f);
+
+    directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
 
     //Shader 
     std::string vertexShaderPath = "src/Shader/VertexShader.vert";
@@ -291,18 +289,6 @@ int main()
     std::string skyboxVertexShaderPath = "src/Shader/SkyboxVertShader.vert";
     std::string skyboxFragmentShaderPath = "src/Shader/SkyboxFragShader.frag";
     skyboxShader.CompileShader(skyboxVertexShaderPath, skyboxFragmentShaderPath);
-
-    //Getting uniforms Locations
-    unsigned int modelUniformLoc = shader.UniformLocation("model");
-    unsigned int viewUniformLoc = shader.UniformLocation("view");
-    unsigned int projectionUniformLoc = shader.UniformLocation("projection");
-    unsigned int timeUniformLoc = shader.UniformLocation("time");
-    unsigned int lightDirectionUniformLoc = shader.UniformLocation("lightDir");
-
-    unsigned int viewUniformSkyboxLoc = skyboxShader.UniformLocation("view");
-    unsigned int projectionUniformSkyboxLoc = skyboxShader.UniformLocation("projection");
-
-
 
     while (!glfwWindowShouldClose(window))
     {
@@ -320,16 +306,15 @@ int main()
         skyboxView = glm::mat4(glm::mat3(view)); // REMOVE TRANSLATION
 
         //Adding data to uniforms after creating shaders
-        glUniformMatrix4fv(modelUniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(viewUniformLoc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projectionUniformLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(shader.GetModelUniformLoc(), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(shader.GetViewUniformLoc(), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(shader.GetProjectionUniformLoc(), 1, GL_FALSE, glm::value_ptr(projection));
         //For wave
         float timeValue = glfwGetTime();
-        glUniform1f(timeUniformLoc, timeValue);
+        glUniform1f(shader.GetTimeUniformLoc(), timeValue);
         //For light
-        glUniform3fv(lightDirectionUniformLoc, 1, glm::value_ptr(directionalLight));
+        shader.SetDirectionalLight(directionalLight);
 
-        waterTexture.UseTexture();
         glBindVertexArray(VAO);  // bind world VAO
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); // Draw grid
         glBindVertexArray(0);
@@ -340,8 +325,8 @@ int main()
 
         skyboxShader.UseShader(); // switch to skybox shader
 
-        glUniformMatrix4fv(viewUniformSkyboxLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
-        glUniformMatrix4fv(projectionUniformSkyboxLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(skyboxShader.GetViewUniformLoc(), 1, GL_FALSE, glm::value_ptr(skyboxView));
+        glUniformMatrix4fv(skyboxShader.GetProjectionUniformLoc(), 1, GL_FALSE, glm::value_ptr(projection));
 
         glBindVertexArray(skyboxVAO);
         skyboxTexture.UseTexture();
