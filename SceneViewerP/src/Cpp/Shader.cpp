@@ -114,7 +114,11 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	lightColorUniformLoc = glGetUniformLocation(shaderID, "directionalLight.base.color");
 	lightAmbientIntensityLoc = glGetUniformLocation(shaderID, "directionalLight.base.ambientIntensity");
 	lightDiffuseIntensityLoc = glGetUniformLocation(shaderID, "directionalLight.base.diffuseIntensity");
+	materialSpecularIntensityLoc = glGetUniformLocation(shaderID, "material.specularIntensity");
+	materialShininessLoc = glGetUniformLocation(shaderID, "material.shininess");
 	lightDirectionUniformLoc = glGetUniformLocation(shaderID, "directionalLight.lightDir");
+	eyePosUniformLoc = glGetUniformLocation(shaderID, "eyePos");
+
 }
 
 std::string Shader::ReadFile(std::string& filePath)
@@ -154,6 +158,11 @@ unsigned int Shader::GetTimeUniformLoc()
 	return timeUniformLoc;
 }
 
+unsigned int Shader::GetEyePosUniformLoc()
+{
+	return eyePosUniformLoc;
+}
+
 void Shader::UseShader()
 {
 	glUseProgram(shaderID);
@@ -162,6 +171,11 @@ void Shader::UseShader()
 void Shader::SetDirectionalLight(DirectionalLight directionalLight)
 {
 	directionalLight.UseLight(lightAmbientIntensityLoc, lightDiffuseIntensityLoc, lightColorUniformLoc, lightDirectionUniformLoc);
+}
+
+void Shader::SetMaterial(Material material)
+{
+	material.UseMaterial(materialSpecularIntensityLoc, materialShininessLoc);
 }
 
 Shader::~Shader() {

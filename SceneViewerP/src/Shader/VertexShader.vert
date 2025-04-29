@@ -4,6 +4,7 @@ layout (location = 0) in vec3 aPos;  //we say that from vertex attributes in ind
 
 out float waveHeight;
 out vec3 fragNormal;
+out vec3 fragPos;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -51,6 +52,7 @@ dWave_dx += -sin((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * (0.2 * 10.0)
 dWave_dz += -sin((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * (0.2 * 10.0) * 0.05;
 
 fragNormal = normalize(vec3(-dWave_dx, 1.0, -dWave_dz));
+fragPos = vec3(model * vec4(pos, 1.0));
 
 waveHeight = pos.y;
 

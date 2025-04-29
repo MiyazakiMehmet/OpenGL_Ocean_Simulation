@@ -9,13 +9,14 @@
 #include <GL/glew.h>
 
 #include "DirectionalLight.h"
+#include "Material.h"
 
 class Shader {
 private:
 	unsigned int shaderID;
 	unsigned int vertexShader, fragmentShader;
 	unsigned int modelUniformLoc, viewUniformLoc, projectionUniformLoc, timeUniformLoc,
-				 lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, lightDirectionUniformLoc;
+				 lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, materialSpecularIntensityLoc, materialShininessLoc, lightDirectionUniformLoc, eyePosUniformLoc;
 public:
 	Shader();
 
@@ -30,10 +31,13 @@ public:
 	unsigned int GetViewUniformLoc();
 	unsigned int GetProjectionUniformLoc();
 	unsigned int GetTimeUniformLoc();
+	unsigned int GetEyePosUniformLoc();
 
 	void UseShader();
 
 	void SetDirectionalLight(DirectionalLight directionalLight);
+	void SetMaterial(Material material);
+
 
 	~Shader();
 };
