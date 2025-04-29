@@ -105,6 +105,16 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	if (!success) {
 		glGetProgramInfoLog(shaderID, 512, NULL, infoLog);
 	}
+
+	//Getting uniforms Locations
+	modelUniformLoc = glGetUniformLocation(shaderID, "model");
+	viewUniformLoc = glGetUniformLocation(shaderID, "view");
+	projectionUniformLoc = glGetUniformLocation(shaderID, "projection");
+	timeUniformLoc = glGetUniformLocation(shaderID, "time");
+	lightColorUniformLoc = glGetUniformLocation(shaderID, "directionalLight.base.color");
+	lightAmbientIntensityLoc = glGetUniformLocation(shaderID, "directionalLight.base.ambientIntensity");
+	lightDiffuseIntensityLoc = glGetUniformLocation(shaderID, "directionalLight.base.diffuseIntensity");
+	lightDirectionUniformLoc = glGetUniformLocation(shaderID, "directionalLight.lightDir");
 }
 
 std::string Shader::ReadFile(std::string& filePath)
@@ -124,15 +134,34 @@ std::string Shader::ReadFile(std::string& filePath)
 
 }
 
-unsigned int Shader::UniformLocation(const char* uniformName) {
+unsigned int Shader::GetModelUniformLoc()
+{
+	return modelUniformLoc;
+}
 
-	return glGetUniformLocation(shaderID, uniformName);
+unsigned int Shader::GetViewUniformLoc()
+{
+	return viewUniformLoc;
+}
 
+unsigned int Shader::GetProjectionUniformLoc()
+{
+	return projectionUniformLoc;
+}
+
+unsigned int Shader::GetTimeUniformLoc()
+{
+	return timeUniformLoc;
 }
 
 void Shader::UseShader()
 {
 	glUseProgram(shaderID);
+}
+
+void Shader::SetDirectionalLight(DirectionalLight directionalLight)
+{
+	directionalLight.UseLight(lightAmbientIntensityLoc, lightDiffuseIntensityLoc, lightColorUniformLoc, lightDirectionUniformLoc);
 }
 
 Shader::~Shader() {
