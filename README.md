@@ -1,3 +1,3 @@
 # OpenGL Ocean Simulation
 
-![Screenshot_17](https://github.com/user-attachments/assets/5cca2c68-8db9-4026-81f7-0bd38f3664c6)
+![9sh1v0](https://github.com/user-attachments/assets/c5ac16c0-8ac2-43d7-a302-70a188dc6bc2)
