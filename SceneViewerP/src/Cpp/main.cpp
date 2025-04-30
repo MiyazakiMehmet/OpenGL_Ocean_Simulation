@@ -243,7 +243,7 @@ int main()
 
     //Transformations
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.5f, -1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.5f, -3.0f, -20.0f));
     //model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Camera(view matrix)
@@ -277,9 +277,9 @@ int main()
 
     //Lightning
     float ambientIntensity = 0.1f;
-    float diffuseIntensity = 0.5f;
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDirection = glm::vec3(-0.2f, -0.8f, -0.2f);
+    float diffuseIntensity = 0.3f;
+    glm::vec3 lightColor = glm::vec3(1.0f, 0.9f, 0.6f);
+    glm::vec3 lightDirection = glm::vec3(-0.0f, -0.3f, 1.0f);
 
     directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
 
@@ -297,6 +297,21 @@ int main()
     std::string skyboxFragmentShaderPath = "src/Shader/SkyboxFragShader.frag";
     skyboxShader.CompileShader(skyboxVertexShaderPath, skyboxFragmentShaderPath);
 
+    constexpr int NUM_WAVES = 32;
+    std::vector<glm::vec2> waveDirs;
+    std::vector<float> amps, freqs, phases;
+
+    for (int i = 0; i < NUM_WAVES; ++i) {
+        float angle = i / float(NUM_WAVES) * 2.0f * 3.14159f;
+        waveDirs.emplace_back(cos(angle), sin(angle));
+
+        float freq = 0.5f + 16.0f * float(rand()) / RAND_MAX;
+        freqs.push_back(freq);
+        amps.push_back(0.1f / (1.0f + freq)); // Smaller amp for high freq
+        phases.push_back(float(rand()) / RAND_MAX);
+    }
+
+
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -307,6 +322,12 @@ int main()
 
         //Draw normal scene
         shader.UseShader();
+
+        glUniform1i(glGetUniformLocation(shader.shaderID, "uNumWaves"), NUM_WAVES);
+        glUniform2fv(glGetUniformLocation(shader.shaderID, "uWaveDirs"), NUM_WAVES, &waveDirs[0].x);
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uAmplitudes"), NUM_WAVES, amps.data());
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uFrequencies"), NUM_WAVES, freqs.data());
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uPhases"), NUM_WAVES, phases.data());
 
         //Update view matrix if camera movement changes
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

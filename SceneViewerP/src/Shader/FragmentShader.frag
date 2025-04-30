@@ -43,7 +43,7 @@ void main() {
     vec3 specular = material.specularIntensity * specularFactor * directionalLight.base.color;
 
     // 4) tint water base blue, then add white specular
-    vec3 waterBase = (ambient + diffuse) * vec3(0.0, 0.7, 1.0);
+    vec3 waterBase = (ambient + diffuse) * vec3(0.0, 0.66, 1.0);
     vec3 finalColor  = waterBase + specular;
 
     FragColor = vec4(finalColor, 1.0);
