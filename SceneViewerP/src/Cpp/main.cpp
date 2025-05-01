@@ -243,7 +243,7 @@ int main()
 
     //Transformations
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.5f, -1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.5f, -3.0f, -20.0f));
     //model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Camera(view matrix)
@@ -277,9 +277,9 @@ int main()
 
     //Lightning
     float ambientIntensity = 0.1f;
-    float diffuseIntensity = 0.5f;
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 lightDirection = glm::vec3(-0.2f, -0.8f, -0.2f);
+    float diffuseIntensity = 0.3f;
+    glm::vec3 lightColor = glm::vec3(1.0f, 0.8f, 0.7f);
+    glm::vec3 lightDirection = glm::vec3(-0.0f, -0.3f, 1.0f);
 
     directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
 
@@ -297,6 +297,38 @@ int main()
     std::string skyboxFragmentShaderPath = "src/Shader/SkyboxFragShader.frag";
     skyboxShader.CompileShader(skyboxVertexShaderPath, skyboxFragmentShaderPath);
 
+    constexpr int NUM_WAVES = 32;
+    std::vector<glm::vec2> waveDirs;
+    std::vector<float> amps, freqs, phases;
+
+    float initialFreq = 0.6f;
+    float initialAmp = 0.2f;
+    float freqGrowth = 1.59f;
+    float ampDecay = 0.62f;
+
+    for (int i = 0; i < 32; ++i) {
+        float angle = (float(rand()) / RAND_MAX) * 2.0f * 3.14159265359;
+        std::cout << "Angle: " << angle << std::endl;
+        glm::vec2 dir(cos(angle), sin(angle));
+        waveDirs.push_back(dir);
+
+        // Progressive frequency and amplitude
+        float freq = initialFreq * std::pow(freqGrowth, i);
+        float amp = initialAmp * std::pow(ampDecay, i);
+
+        std::cout << "freq: " << freq << std::endl;
+        std::cout << "amp: " << angle << std::endl;
+
+
+        if (i > 24)
+            amp *= 0.3f;  // very small ripples at end
+
+        freqs.push_back(freq);
+        amps.push_back(amp); // Smaller amp for high freq
+        phases.push_back(0.2f + 1.5f * float(rand()) / RAND_MAX); // in CPU
+    }
+
+
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -307,6 +339,12 @@ int main()
 
         //Draw normal scene
         shader.UseShader();
+
+        glUniform1i(glGetUniformLocation(shader.shaderID, "uNumWaves"), NUM_WAVES);
+        glUniform2fv(glGetUniformLocation(shader.shaderID, "uWaveDirs"), NUM_WAVES, &waveDirs[0].x);
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uAmplitudes"), NUM_WAVES, amps.data());
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uFrequencies"), NUM_WAVES, freqs.data());
+        glUniform1fv(glGetUniformLocation(shader.shaderID, "uPhases"), NUM_WAVES, phases.data());
 
         //Update view matrix if camera movement changes
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);

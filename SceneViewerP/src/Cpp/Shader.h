@@ -12,11 +12,11 @@
 #include "Material.h"
 
 class Shader {
-private:
+public:
 	unsigned int shaderID;
 	unsigned int vertexShader, fragmentShader;
 	unsigned int modelUniformLoc, viewUniformLoc, projectionUniformLoc, timeUniformLoc,
-				 lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, materialSpecularIntensityLoc, materialShininessLoc, lightDirectionUniformLoc, eyePosUniformLoc;
+		lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, materialSpecularIntensityLoc, materialShininessLoc, lightDirectionUniformLoc, eyePosUniformLoc;
 public:
 	Shader();
 

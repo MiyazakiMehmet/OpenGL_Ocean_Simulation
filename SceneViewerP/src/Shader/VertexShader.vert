@@ -1,60 +1,56 @@
-#version 330 core
+    #version 330 core
 
-layout (location = 0) in vec3 aPos;  //we say that from vertex attributes in index 0 (which is position), i assign it to aPos
+    layout(location = 0) in vec3 aPos;
 
-out float waveHeight;
-out vec3 fragNormal;
-out vec3 fragPos;
+    out float waveHeight;
+    out vec3 fragNormal;
+    out vec3 fragPos;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-uniform float time;
+    uniform mat4 model;
+    uniform mat4 view;
+    uniform mat4 projection;
+    uniform float time;
 
+    const int MAX_WAVES = 64;
+    uniform int   uNumWaves;
+    uniform vec2  uWaveDirs[MAX_WAVES];
+    uniform float uAmplitudes[MAX_WAVES];
+    uniform float uFrequencies[MAX_WAVES];
+    uniform float uPhases[MAX_WAVES];
 
-void main(){
-vec3 pos = aPos;
+    void main() {
+        vec3 pos = aPos;
 
-float wave = 0.0;	
+        float wave = 0.0;
+        float dX = 0.0;
+        float dZ = 0.0;
 
+        for (int i = 0; i < 32; ++i) {
+            vec2 dir = uWaveDirs[i];
+            float amp = uAmplitudes[i];
+            float freq = uFrequencies[i];
+            float phaseSpeed = uPhases[i];
 
-// Basic wave 1 (x direction)
-wave += sin(pos.x * 1.0 + time * 1.0) * 0.1;
+            float phi = dot(dir, pos.xz) * freq + time * phaseSpeed * 2;
+            float sinVal = sin(phi);
+            float env = exp(sinVal - 1.0);  // envelope
 
-// Basic wave 2 (z direction)
-wave += cos(pos.z * 1.0 + time * 1.0) * 0.1;
+            
+            wave += amp * env;
 
-// Additional wave 3 (diagonal movement)
-wave += sin((pos.x + pos.z) * 0.6 + time * 0.7) * 0.08;
+            float dEnv = env * cos(phi);
+            float d = amp * dEnv * freq;
+            dX += d * dir.x;
+            dZ += d * dir.y;
+        }
 
-// Additional wave 4 (different frequency and slower)
-wave += cos((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * 0.05;
+        pos.y += wave;
+        waveHeight = pos.y;
 
-pos.y += wave;
+        // Recompute normal
+        vec3 normal = normalize(vec3(-dX, 1.0, -dZ));
+        fragNormal = normalize(mat3(model) * normal);
 
-//Instead of using real normals, we'll use fake normals(estimated)
-// Calculate derivatives
-float dWave_dx = 0.0;
-float dWave_dz = 0.0;
-
-// Wave 1
-dWave_dx += cos(pos.x * 1.0 + time * 1.0) * 1.0 * 0.1;
-
-// Wave 2
-dWave_dz += -sin(pos.z * 1.0 + time * 1.0) * 1.0 * 0.1;
-
-// Wave 3
-dWave_dx += cos((pos.x + pos.z) * 0.6 + time * 0.7) * 0.6 * 0.08;
-dWave_dz += cos((pos.x + pos.z) * 0.6 + time * 0.7) * 0.6 * 0.08;
-
-// Wave 4
-dWave_dx += -sin((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * (0.2 * 10.0) * 0.05;
-dWave_dz += -sin((pos.x * 0.2 + pos.z * 0.2) * 10.0 + time * 0.3) * (0.2 * 10.0) * 0.05;
-
-fragNormal = normalize(vec3(-dWave_dx, 1.0, -dWave_dz));
-fragPos = vec3(model * vec4(pos, 1.0));
-
-waveHeight = pos.y;
-
-gl_Position = projection * view * model * vec4(pos, 1.0);
-};
+        fragPos = vec3(model * vec4(pos, 1.0));
+        gl_Position = projection * view * vec4(fragPos, 1.0);
+    }
