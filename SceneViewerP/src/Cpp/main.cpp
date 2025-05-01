@@ -278,7 +278,7 @@ int main()
     //Lightning
     float ambientIntensity = 0.1f;
     float diffuseIntensity = 0.3f;
-    glm::vec3 lightColor = glm::vec3(1.0f, 0.9f, 0.6f);
+    glm::vec3 lightColor = glm::vec3(1.0f, 0.8f, 0.7f);
     glm::vec3 lightDirection = glm::vec3(-0.0f, -0.3f, 1.0f);
 
     directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
@@ -301,14 +301,31 @@ int main()
     std::vector<glm::vec2> waveDirs;
     std::vector<float> amps, freqs, phases;
 
-    for (int i = 0; i < NUM_WAVES; ++i) {
-        float angle = i / float(NUM_WAVES) * 2.0f * 3.14159f;
-        waveDirs.emplace_back(cos(angle), sin(angle));
+    float initialFreq = 0.6f;
+    float initialAmp = 0.2f;
+    float freqGrowth = 1.59f;
+    float ampDecay = 0.62f;
 
-        float freq = 0.5f + 16.0f * float(rand()) / RAND_MAX;
+    for (int i = 0; i < 32; ++i) {
+        float angle = (float(rand()) / RAND_MAX) * 2.0f * 3.14159265359;
+        std::cout << "Angle: " << angle << std::endl;
+        glm::vec2 dir(cos(angle), sin(angle));
+        waveDirs.push_back(dir);
+
+        // Progressive frequency and amplitude
+        float freq = initialFreq * std::pow(freqGrowth, i);
+        float amp = initialAmp * std::pow(ampDecay, i);
+
+        std::cout << "freq: " << freq << std::endl;
+        std::cout << "amp: " << angle << std::endl;
+
+
+        if (i > 24)
+            amp *= 0.3f;  // very small ripples at end
+
         freqs.push_back(freq);
-        amps.push_back(0.1f / (1.0f + freq)); // Smaller amp for high freq
-        phases.push_back(float(rand()) / RAND_MAX);
+        amps.push_back(amp); // Smaller amp for high freq
+        phases.push_back(0.2f + 1.5f * float(rand()) / RAND_MAX); // in CPU
     }
 
 
