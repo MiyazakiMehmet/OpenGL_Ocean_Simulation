@@ -30,6 +30,9 @@
     <ClCompile Include="src\Cpp\DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Cpp\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Cpp\Shader.h">
@@ -48,10 +51,15 @@
     <ClInclude Include="src\Cpp\DirectionalLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cpp\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shader\VertexShader.vert" />
     <None Include="src\Shader\FragmentShader.frag" />
     <None Include="src\Shader\SkyboxVertShader.vert" />
+    <None Include="src\Shader\FramebufferVerShader.vert" />
+    <None Include="src\Shader\FramebufferFragShader.frag" />
   </ItemGroup>
 </Project>

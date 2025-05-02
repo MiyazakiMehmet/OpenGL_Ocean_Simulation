@@ -119,6 +119,7 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	lightDirectionUniformLoc = glGetUniformLocation(shaderID, "directionalLight.lightDir");
 	eyePosUniformLoc = glGetUniformLocation(shaderID, "eyePos");
 
+
 }
 
 std::string Shader::ReadFile(std::string& filePath)

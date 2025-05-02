@@ -157,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shader\FragmentShader.frag" />
+    <None Include="src\Shader\FramebufferFragShader.frag" />
+    <None Include="src\Shader\FramebufferVerShader.vert" />
     <None Include="src\Shader\SkyboxVertShader.vert" />
     <None Include="src\Shader\VertexShader.vert" />
   </ItemGroup>
