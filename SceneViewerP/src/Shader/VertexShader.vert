@@ -31,7 +31,7 @@
             float freq = uFrequencies[i];
             float phaseSpeed = uPhases[i];
 
-            float phi = dot(dir, pos.xz) * freq + time * phaseSpeed * 2;
+            float phi = dot(dir, pos.xz) * freq + time * phaseSpeed * 1.3;
             float sinVal = sin(phi);
             float env = exp(sinVal - 1.0);  // envelope
 
