@@ -1,4 +1,4 @@
-#version 330 core
+﻿#version 330 core
 
 out vec4 FragColor;
 in  float waveHeight;
@@ -44,7 +44,18 @@ void main() {
 
     // 4) tint water base blue, then add white specular
     vec3 waterBase = (ambient + diffuse) * vec3(0.0, 0.66, 1.0);
-    vec3 finalColor  = waterBase + specular;
+    vec3 finalLightColor  = waterBase + specular;
 
+    // === FOG ===
+    // 1) distance fog (very gentle fade over your mesh)
+    float dist       = length(fragPos - eyePos);
+    float fogStart   = 15.0;
+    float fogEnd     = 80.0;
+    vec3 fogColor = vec3(1.0, 1.0, 1.0);
+
+    float fogFactor = clamp((fogEnd - dist)/(fogEnd - fogStart), 0.0, 1.0);
+
+    // 5) mix water→sky
+    vec3 finalColor = mix(fogColor, finalLightColor, fogFactor);
     FragColor = vec4(finalColor, 1.0);
 }

@@ -18,6 +18,10 @@
     uniform float uFrequencies[MAX_WAVES];
     uniform float uPhases[MAX_WAVES];
 
+    vec3 fogColor = vec3(0.7, 0.8, 1.0);
+    float fogStart = 30.0;
+    float fogEnd = 80.0;
+
     void main() {
         vec3 pos = aPos;
 
