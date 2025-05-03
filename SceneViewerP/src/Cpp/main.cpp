@@ -45,6 +45,11 @@ constexpr int NUM_WAVES = 32;
 std::vector<glm::vec2> waveDirs;
 std::vector<float> amps, freqs, phases;
 
+glm::vec3 lightDirection;
+glm::vec3 lightColor;
+glm::vec3 sunDirection;
+
+
 Shader shader;
 Shader skyboxShader;
 Shader framebufferShader;
@@ -115,6 +120,9 @@ void ProcessInput(GLFWwindow* window) {
 
 void DrawSceneIntoFBO() {
 
+
+    sunDirection = glm::normalize(- lightDirection);
+
     //Draw Skybox
     glDepthFunc(GL_LEQUAL); // Important: allow skybox at max depth
     glDepthMask(GL_FALSE); // Important: disable writing depth
@@ -123,6 +131,8 @@ void DrawSceneIntoFBO() {
 
     glUniformMatrix4fv(skyboxShader.GetViewUniformLoc(), 1, GL_FALSE, glm::value_ptr(skyboxView));
     glUniformMatrix4fv(skyboxShader.GetProjectionUniformLoc(), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniform3f(skyboxShader.GetSunLightDirUniformLoc(), sunDirection.x, sunDirection.y, sunDirection.z);
+
 
     glBindVertexArray(skyboxVAO);
     skyboxTexture.UseTexture();
@@ -401,14 +411,14 @@ int main()
     //Lightning
     float ambientIntensity = 0.1f;
     float diffuseIntensity = 0.3f;
-    glm::vec3 lightColor = glm::vec3(1.0f, 0.8f, 0.7f);
-    glm::vec3 lightDirection = glm::vec3(-0.0f, -0.3f, 1.0f);
+    lightColor = glm::vec3(1.0f, 0.8f, 0.6f);
+    lightDirection = glm::vec3(-0.0f, -0.07f, 1.0f);
 
     directionalLight = DirectionalLight(ambientIntensity, diffuseIntensity, lightColor, lightDirection);
 
     //Material
-    float specularIntensity = 0.4f;
-    float shininess = 32.0f;
+    float specularIntensity = 0.7f;
+    float shininess = 40.0f;
     material = Material(specularIntensity, shininess);
 
     //Shader 

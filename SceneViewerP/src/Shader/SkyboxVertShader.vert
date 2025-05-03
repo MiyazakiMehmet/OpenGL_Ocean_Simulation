@@ -8,7 +8,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main(){
-	texCoord = aPos;
 	vec4 pos = projection * view * vec4(aPos, 1.0);
+	texCoord = aPos;
 	gl_Position = pos.xyww; // trick: set depth to 1.0
 }

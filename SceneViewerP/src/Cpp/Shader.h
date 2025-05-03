@@ -16,7 +16,8 @@ public:
 	unsigned int shaderID;
 	unsigned int vertexShader, fragmentShader;
 	unsigned int modelUniformLoc, viewUniformLoc, projectionUniformLoc, timeUniformLoc,
-		lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, materialSpecularIntensityLoc, materialShininessLoc, lightDirectionUniformLoc, eyePosUniformLoc;
+		lightColorUniformLoc, lightAmbientIntensityLoc, lightDiffuseIntensityLoc, materialSpecularIntensityLoc, materialShininessLoc, lightDirectionUniformLoc, eyePosUniformLoc,
+		sunLightDirUniformLoc;
 public:
 	Shader();
 
@@ -32,6 +33,9 @@ public:
 	unsigned int GetProjectionUniformLoc();
 	unsigned int GetTimeUniformLoc();
 	unsigned int GetEyePosUniformLoc();
+	unsigned int GetLightDirUniformLoc();
+	unsigned int GetSunLightDirUniformLoc();
+
 
 	void UseShader();
 
