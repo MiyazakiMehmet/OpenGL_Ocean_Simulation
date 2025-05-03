@@ -118,6 +118,8 @@ void Shader::CompileShader(std::string& vertexCodePath, std::string& fragmentCod
 	materialShininessLoc = glGetUniformLocation(shaderID, "material.shininess");
 	lightDirectionUniformLoc = glGetUniformLocation(shaderID, "directionalLight.lightDir");
 	eyePosUniformLoc = glGetUniformLocation(shaderID, "eyePos");
+	sunLightDirUniformLoc = glGetUniformLocation(shaderID, "sunDir");
+
 
 
 }
@@ -163,6 +165,17 @@ unsigned int Shader::GetEyePosUniformLoc()
 {
 	return eyePosUniformLoc;
 }
+
+unsigned int Shader::GetLightDirUniformLoc()
+{
+	return lightDirectionUniformLoc;
+}
+
+unsigned int Shader::GetSunLightDirUniformLoc()
+{
+	return sunLightDirUniformLoc;
+}
+
 
 void Shader::UseShader()
 {
