@@ -198,8 +198,8 @@ int main()
 
     
 
-    int gridSize = 400; //100x100
-    float size = 40.0f; //We strect the vertex position to make bigger triangles
+    int gridSize = 1000; //100x100
+    float size = 100.0f; //We strect the vertex position to make bigger triangles
     for (int y = 0; y <= gridSize; y++) {  //Creating vertices vertically (e.g. y=0,1,2,3,4,5..., x=0)
         for (int x = 0; x <= gridSize; x++) {  //Creating vertices horizantaly (e.g. y=0, x=0,1,2,3,4,5...)
             //Vertex position attributes
