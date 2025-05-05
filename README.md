@@ -1,6 +1,7 @@
 # OpenGL Ocean Simulation
 
 This project is a realistic ocean scene implemented in C++ and OpenGL, featuring:
+
 	•	Gerstner wave simulation with 32 directional waves
 	•	Physically based directional lighting
 	•	Real-time reflections and specular highlights
@@ -9,6 +10,7 @@ This project is a realistic ocean scene implemented in C++ and OpenGL, featuring
 	•	Custom post-processing with framebuffers
 
 Features
+
 	•	Wave Simulation: Realistic ocean surface using a sum of sinusoidal waves with varying amplitude, frequency, and direction.
 	•	Lighting: Directional light simulates sunlight with ambient, diffuse, and specular components.
 	•	Fog and Horizon Fade: Distant water and sky fade smoothly into fog, enhancing depth.
@@ -17,6 +19,7 @@ Features
 	•	Post-Processing: Fullscreen quad rendering using a custom framebuffer for effects and future extension.
 
 Technologies Used
+
 	•	C++
 	•	OpenGL (GLSL shaders, framebuffers, VAO/VBO/EBO)
 	•	GLFW & GLEW
