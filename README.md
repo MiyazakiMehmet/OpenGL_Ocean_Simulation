@@ -1,5 +1,7 @@
 # OpenGL Ocean Simulation
 
+![Screenshot_40](https://github.com/user-attachments/assets/06df701c-5a27-4c14-ba73-f289e1e566df)
+
 This project is a realistic ocean scene implemented in C++ and OpenGL, featuring:
 
 	•	Gerstner wave simulation with 32 directional waves
